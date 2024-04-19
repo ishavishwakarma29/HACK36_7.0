@@ -7,9 +7,9 @@ import './App.css';
 function App() {
   return (
     <div className="flex flex-col items-center bg-zinc-900 gap-y-6">
-        {/* <Navbar/>
-        <Main/> */}
-        <Home/>
+        <Navbar/>
+        <Main/>
+        {/* <Home/> */}
     </div>
   );
 }
