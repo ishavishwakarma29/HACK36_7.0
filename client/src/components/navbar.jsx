@@ -2,8 +2,35 @@ import React from "react";
 import { FaGithubAlt } from "react-icons/fa";
 import { AiFillPlayCircle } from "react-icons/ai";
 import './nav.css'
+import { createContract, getIssueCount } from "../utils/contractFunctions";
+import { contractAddress, abi } from "../utils/constants";
+import {ethers} from "ethers";
 
 function Navbar(){
+    async function createContract(){
+      if (typeof window.ethereum != "undefined") {
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const contract = new ethers.Contract(contractAddress, abi, signer);
+          await contract.deployed();
+          console.log(`Deployed contract at ${contract.address}`);
+          return contract;
+        } catch (error) {
+          return error;
+        }
+      } else {
+        return alert("please install metamask!!");
+      }
+    }
+  async function handleClick() {
+    if (typeof window.ethereum != "undefined") {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      console.log("connected");
+    } else {
+      console.log("please install metamask");
+    }
+  }
     return (
         <div className="w-full flex items-center justify-between px-2 py-1 bg-zinc-900">
             <div className="flex-initial">
@@ -23,10 +50,11 @@ function Navbar(){
                 {/* before connect */}
                 <div className="flex flex-row justify-center items-center mx-5 my-2 p-3">User Guide</div>
                 <button
+                    onClick={handleClick}
                     type="button"
                     className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"
                 >
-                    <AiFillPlayCircle className="text-white mr-2" />
+                    {/* <AiFillPlayCircle className="text-white mr-2" /> */}
                     <p className="text-white text-base font-semibold">Connect Wallet</p>
                 </button>
                 <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer">dark mode</button>
