@@ -11,10 +11,24 @@ contract SmartContract {
         string title;
         bool completed;
         uint256 ethAmount;
-        address userAddress;
+        address ownerAddress;
+        bool trying;
+        requested[] pending;
+    }
+    struct requested{
+        address sender;
+        address ownerAddress;
+        string userName;
+        bool trying;
+        bool completed;
     }
     
     mapping(uint256=>issues) map;
+    
+    function getIssueCount() public view returns(uint256)
+    {
+        return count;
+    }
 
     function allIssues() public view returns(issues[] memory){
         issues[] memory allissues;
@@ -36,23 +50,57 @@ contract SmartContract {
         issue.desc=_desc;
         issue.title=_title;
         issue.completed=_completed;
+        issue.ownerAddress=msg.sender;
     }
 
-    function getMyIssues(address sender) public view returns(issues[] memory){
-        issues [] memory myIssues;
+    
+    function getOpenIssues() public view returns(issues[] memory){
+        issues[] memory openIssues;
         uint k=0;
-        for( uint i=0;i<count;i++)
+        for(uint i=0;i<count;i++)
         {
             issues memory issue=map[i];
-            if(issue.userAddress==sender)
+            if(issue.completed==false)
+            {
+                openIssues[k]=issue;
+            }
+        }
+        return openIssues;
+    }
+    function myIssues() public view returns (issues[] memory)
+    {
+        issues[] memory myIssues;
+        uint k=0;
+        for(uint i=0;i<count;i++)
+        {
+            issues memory issue=map[i];
+            if(msg.sender==issue.ownerAddress)
             {
                 myIssues[k]=issue;
-                k++;
             }
         }
         return myIssues;
     }
 
+    function getClosedIssues() public view returns(issues[]memory)
+    {
+        issues[] memory myCompletedIssues;
+        uint k=0;
+        for(uint i=0;i<count;i++)
+        {
+            issues memory issue=map[i];
+            if(issue.ownerAddress==msg.sender)
+            {
+                if(issue.completed==true)
+                {
+                    myCompletedIssues[k]=issue;
+                }
+            }
+        }
+        return myCompletedIssues;
+    }
+
+    // function requestIssue()
     
 
 }
