@@ -21,6 +21,7 @@ function Navbar(){
                 </div> */}
 
                 {/* before connect */}
+                <div className="flex flex-row justify-center items-center mx-5 my-2 p-3">User Guide</div>
                 <button
                     type="button"
                     className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"
@@ -28,7 +29,7 @@ function Navbar(){
                     <AiFillPlayCircle className="text-white mr-2" />
                     <p className="text-white text-base font-semibold">Connect Wallet</p>
                 </button>
-                <button className="lex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer">dark mode</button>
+                <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer">dark mode</button>
             </div>
         </div>
     );
