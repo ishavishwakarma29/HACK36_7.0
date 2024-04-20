@@ -129,17 +129,17 @@ function Home(){
         }
     }
 
-    // useEffect(()=>{
-    //     if(window.ethereum)
-    //     {
+    useEffect(()=>{
+        if(window.ethereum)
+        {
 
-    //         getAllIssues();
-    //         // getMyIssues();
-    //         getDoneIssues();
-    //         // getPendingIssues();
+            getAllIssues();
+            // getMyIssues();
+            // getDoneIssues();
+            // getPendingIssues();
 
-    //     }
-    // },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
+        }
+    },[]);
 
     function handleAllIssues(){
         setAllIssues(true);
@@ -227,7 +227,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">No Issues Have Been Posted Yet :/</div>
             : totalIssues.map((issue)=>{
                     return(
-                        <AllCard issue={issue}/>
+                        <AllCard title={issue[3]} desc={issue[2]} link={issue[1]}/>
                     )
                 })}
             </>

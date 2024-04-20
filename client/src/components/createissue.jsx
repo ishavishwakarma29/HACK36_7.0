@@ -21,10 +21,6 @@ function Create(){
         return Contract;
     };
 
-    async function addIssue(){
-        const contract=createContract();
-        const addIssue = await contract.addIssue(ethAmount, id, repolink, desc, title);
-    }
     async function handleSubmit()
     {
         if (window.ethereum) {
@@ -32,9 +28,14 @@ function Create(){
                 const contract = createContract();
                 console.log(contract.address);
                 try {
-                    // console.log();
-                    const transactionResponse = await contract.doPayment({ value: BigNumber.from(ethAmount)}).then(() => {
-                        addIssue();
+                    const transactionResponse = await contract.doPayment({ value: BigNumber.from(ethAmount)})
+                    .then(async function(){
+                        const addIssue = await contract.addIssue(ethAmount, id, repolink, desc, title)
+                        if(addIssue)
+                        {
+                            alert("Issue added successfully!!!");
+                        }
+                        console.log(addIssue);
                     }
                     );
                 } catch (error) {
@@ -49,12 +50,6 @@ function Create(){
         }
     }
     
-    useEffect(()=>{
-        if(window.ethereum)
-        {
-            const contract=createContract();
-        }
-    },[])
 
     return (
     <div className="flex flex-col items-center py-6 rounded-2xl  w-3/6 bg-zinc-700 text-white gap-y-6 ">

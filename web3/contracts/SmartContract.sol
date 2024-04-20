@@ -46,8 +46,8 @@ contract SmartContract {
         return allissues;
     } 
 
-    function addIssue(uint ethAmount, uint _id, string memory _repoUrl, string memory _desc, string memory _title)public{
-        issues memory issue=map[count];
+    function addIssue(uint _ethAmount, uint _id, string memory _repoUrl, string memory _desc, string memory _title)public{
+        issues storage issue=map[count];
         issue.id=count;
         count+=1;
         issue.repoUrl=_repoUrl;
@@ -56,7 +56,7 @@ contract SmartContract {
         issue.completed=false;
         issue.trying=true;
         issue.ownerAddress=msg.sender;
-        issue.ethAmount=ethAmount;
+        issue.ethAmount=_ethAmount;
     }
 
     function doPayment() external payable{
@@ -69,13 +69,10 @@ contract SmartContract {
         for(uint i=0;i<count;i++)
         {
             issues memory issue=map[i];
-            if(issue.ownerAddress==msg.sender)
-            {
-                continue;
-            }
             if(issue.completed==false)
             {
                 openIssues[k]=issue;
+                k++;
             }
         }
         return openIssues;
@@ -90,6 +87,7 @@ contract SmartContract {
             if(msg.sender==issue.ownerAddress)
             {
                 myIssue[k]=issue;
+                k++;
             }
         }
         return myIssue;
@@ -107,6 +105,7 @@ contract SmartContract {
                 if(issue.completed==true)
                 {
                     myCompletedIssues[k]=issue;
+                    k++;
                 }
             }
         }
