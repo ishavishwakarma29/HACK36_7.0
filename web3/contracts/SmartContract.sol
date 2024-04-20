@@ -46,17 +46,22 @@ contract SmartContract {
         return allissues;
     } 
 
-    function  addIssue(string memory _repoUrl,string memory _desc, string memory _title,bool _completed,uint256 _ethAmount)public {
+    function addIssue(uint ethAmount, uint _id, string memory _repoUrl, string memory _desc, string memory _title)public{
         issues memory issue=map[count];
         issue.id=count;
         count+=1;
         issue.repoUrl=_repoUrl;
         issue.desc=_desc;
         issue.title=_title;
-        issue.completed=_completed;
+        issue.completed=false;
+        issue.trying=true;
         issue.ownerAddress=msg.sender;
+        issue.ethAmount=ethAmount;
     }
 
+    function doPayment() public payable{
+        gasLimit: 20000000
+    }
     
     function getOpenIssues() public view returns(issues[] memory){
         issues[] memory openIssues=new issues[](count);

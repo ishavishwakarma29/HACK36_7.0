@@ -11,19 +11,33 @@ function Create(){
     const[desc, setDesc]=useState("");
     const[ethAmount,setEthAmount]=useState();
 
-    const createContract = () => {    //creating contract
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const Contract = new ethers.Contract(contractAddress,abi,signer);
-        return Contract;
-      };
-
-
-    async function handleSubmit(){
-        const contract=createContract();
-        const txres=await contract.addIssue(repolink,desc,title,ethAmount);
-        console.log(ethAmount);
+    async function handleSubmit()
+    {
+        if (window.ethereum) {
+            try {
+                const contract = await createContract();
+                console.log(contract.address);
+                try {
+                    console.log(ethers.utils.parseEther(ethAmount));
+                    const transactionResponse = await contract.doPayment({
+                        value: ethers.utils.parseEther(ethAmount),
+                        gasLimit: 20000000
+                    });
+                    console.log(transactionResponse.confirmations);
+                    const addIssue = await contract.addIssue(ethAmount, id, repolink, desc, title);
+                    console.log(addIssue);
+                } catch (error) {
+                    console.log(error);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        else {
+            console.log("Please install metamask");
+        }
     }
+    
     useEffect(()=>{
         if(window.ethereum)
         {

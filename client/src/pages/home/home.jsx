@@ -115,7 +115,7 @@ function Home(){
         try {
             if (window.ethereum) {
                 const contract = createContract();
-                const myIssues = await contract.getMyIssues();
+                const myIssues = await contract.myIssues();
                 // console.log(AllIssues);
                 // setTotalIssues(AllIssues);
                 console.log(myIssues);
