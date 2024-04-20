@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 contract SmartContract {
     uint256 public count;
@@ -59,8 +59,8 @@ contract SmartContract {
         issue.ethAmount=ethAmount;
     }
 
-    function doPayment() public payable{
-        gasLimit: 20000000
+    function doPayment() external payable{
+        
     }
     
     function getOpenIssues() public view returns(issues[] memory){
