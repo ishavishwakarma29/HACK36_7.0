@@ -60,6 +60,10 @@ contract SmartContract {
         for(uint i=0;i<count;i++)
         {
             issues memory issue=map[i];
+            if(issue.ownerAddress==msg.sender)
+            {
+                continue;
+            }
             if(issue.completed==false)
             {
                 openIssues[k]=issue;
