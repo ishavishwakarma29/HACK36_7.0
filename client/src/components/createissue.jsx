@@ -30,7 +30,8 @@ function Create(){
                 try {
                     const transactionResponse = await contract.doPayment({ value: BigNumber.from(ethAmount)})
                     .then(async function(){
-                        const addIssue = await contract.addIssue(ethAmount, id, repolink, desc, title)
+                        const id=0;
+                        const addIssue = await contract.addIssue(ethAmount,id, repolink, desc, title,userName)
                         if(addIssue)
                         {
                             alert("Issue added successfully!!!");
@@ -79,11 +80,6 @@ function Create(){
         type="number"
         placeholder="ETH-Amount"
         onChange={(e) => setEthAmount(e.target.value)}></input>
-        <input 
-        className="w-4/5 max-h-24 rounded-lg focus:outline-none cursor-auto bg-zinc-500 text-white font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2"
-        type="textarea"
-        placeholder="Issue id"
-        onChange={(e) => setId(e.target.value)}></input>
         <button onClick={handleSubmit}>Submit Issue</button>
     </div>)
 }

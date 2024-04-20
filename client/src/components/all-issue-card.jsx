@@ -1,13 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiGithub } from "react-icons/fi";
 import { PiCurrencyEth } from "react-icons/pi";
+import {ethers} from "ethers"
+import {contractAddress,abi} from "../utils/constants"
 
-function AllCard({title,desc,ethAmount,link}){
-    useEffect(()=>{
-        console.log(title);
-    },[]);
+function AllCard({title,desc,ethAmount,link,id}){
+
+    const[name,setName]=useState("");
+
+
+    const createContract = () => {    //creating contract
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const Contract = new ethers.Contract(contractAddress, abi, signer);
+        console.log(Contract.address);
+        return Contract;
+    };
+
+
+    
     function handleClick(){
         window.location.replace(link,);
+    }
+    async function handleClickBtn(){
+        if(window.ethereum)
+        {
+            try
+            {
+                const contract=await createContract();
+                const reqIssue = await contract.requestIssue(id, name);
+                console.log(reqIssue);
+            }
+            catch(err)
+            {
+                console.log(err);
+            }
+        }
     }
     return (
         <div className="flex flex-col bg-zinc-600 w-96 px-7 py-7 gap-y-3">
@@ -26,9 +54,10 @@ function AllCard({title,desc,ethAmount,link}){
             </div>
             <input 
             className="text-2xl"
-            placeholder="Github Username"></input>
-            <button
-            className="text-3xl bg-zinc-400">Request</button>
+            placeholder="Github Username"
+            type="text"
+            onChange={(e) => setName(e.target.value)}></input>
+            <button className="text-3xl bg-zinc-400" onClick={handleClickBtn}>Request</button>
         </div>
     );
 }

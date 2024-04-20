@@ -27,6 +27,7 @@ function Home(){
     const[pending, setPending]=useState(false);
     const[create, setCreate]=useState(false);
     const[aboutUs, setAboutUs]=useState(false);
+    const[userAddress,setUserAddress]=useState('');
 
 
     const [totalIssues,setTotalIssues]=useState([]);
@@ -48,7 +49,9 @@ function Home(){
             if(!window.ethereum) return alert("please install metamask!");
             const accounts = await window.ethereum.request({ method: "eth_requestAccounts"});
             if(accounts.length)
-            return accounts[0];
+            {
+                setUserAddress(accounts[0]);
+            }
             else console.log("an error occured");
         } catch (error) {
             console.log(error);
@@ -96,12 +99,12 @@ function Home(){
         try {
             if (window.ethereum) {
                 const contract = createContract();
-                const openIssues = await contract.getOpenIssues();
-                // console.log(AllIssues);
-                // setTotalIssues(AllIssues);
-                console.log(openIssues);
+                const pendingIssues = await contract.getMyTryingIssues();
+                console.log(pendingIssues);
+                setPendingIssues(pendingIssues);
             }
-            else {
+            else 
+            {
                 console.log("Metamask Not Found");
             }
         }
@@ -132,11 +135,11 @@ function Home(){
     useEffect(()=>{
         if(window.ethereum)
         {
-
+            getAccountAddress();
             getAllIssues();
             // getMyIssues();
             // getDoneIssues();
-            // getPendingIssues();
+            getPendingIssues();
 
         }
     },[]);
@@ -200,10 +203,10 @@ function Home(){
                     className={`mr-5 hover:text-gray-30 ${allIssues?'text-gray-100':''}`}>All Issues</div>
                     <div 
                     onClick={handleMyIssues}
-                    className={`mr-5 hover:text-gray-30 ${myIssues?'text-gray-100':''}`}>My Issues</div>
+                    className={`mr-5 hover:text-gray-30 ${myIssues?'text-gray-100':''}`}>Issues Posted</div>
                     <div 
                     onClick={handleDoneIssues}
-                    className={`mr-5 hover:text-gray-30 ${doneIssues?'text-gray-100':''}`}>Completed Issues</div>
+                    className={`mr-5 hover:text-gray-30 ${doneIssues?'text-gray-100':''}`}>Solved Issues</div>
                     <div 
                     onClick={handlePending}
                     className={`mr-5 hover:text-gray-30 ${pending?'text-gray-100':''}`}>Pending Issues</div>
@@ -212,10 +215,9 @@ function Home(){
                     className={`mr-5 hover:text-gray-30 ${create?'text-gray-100':''}`}>Create Issue</div>
                 </nav>
                 <div className="flex gap-x-5">
-                <button className="bg-gray-100 border-0 py-1 px-3 focus:outline-none rounded">
-                address
+                <button className="bg-gray-100 border-0 py-1 px-3 focus:outline-none rounded w-[100px] overflow-hidden">
+                {userAddress}
                 </button>
-                <ThemeSwitch  checked={darkMode} onChange={toggleDarkMode}/>
                 </div>
                 
             </div>  
@@ -227,7 +229,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">No Issues Have Been Posted Yet :/</div>
             : totalIssues.map((issue)=>{
                     return(
-                        <AllCard title={issue[3]} desc={issue[2]} link={issue[1]}/>
+                        <AllCard title={issue[3]} desc={issue[2]} link={issue[1]} id={JSON.parse(issue[0])} ethAmount={JSON.parse(issue[6])}/>
                     )
                 })}
             </>
@@ -261,7 +263,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have No Pending Issue!</div>
             : myPendingIssues.map((issue)=>{
                 return(
-                    <PendingCard/>
+                    <PendingCard title={issue[3]} desc={issue[2]} link={issue[1]} id={JSON.parse(issue[0])} ethAmount={JSON.parse(issue[6])}/>
                 )})}
             </>
             }
