@@ -4,7 +4,7 @@ import { PiCurrencyEth } from "react-icons/pi";
 
 function AllCard(){
     return (
-        <div className="flex flex-col bg-zinc-600 w-2/5 px-7 py-7 gap-y-3">
+        <div className="flex flex-col bg-zinc-600 w-96 px-7 py-7 gap-y-3">
             <div className="flex justify-between text-3xl">
                 <div>Issue 1</div>
                 <div className=""><FiGithub/></div>
