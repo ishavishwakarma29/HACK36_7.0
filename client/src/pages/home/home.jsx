@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AllCard from '../../components/all-issue-card'
 import MyCard from "../../components/my-issue-card";
 import DoneCard from "../../components/CompleteCard";
 import PendingCard from "../../components/pending-issue-card";
 import Create from "../../components/createissue";
+import { contractAddress,abi } from "../../utils/constants";
+import { FaMapSigns } from "react-icons/fa";
+import { ethers } from "ethers";
 
 
 function Home(){
@@ -14,6 +17,53 @@ function Home(){
     const[pending, setPending]=useState(false);
     const[create, setCreate]=useState(false);
     const[aboutUs, setAboutUs]=useState(false);
+
+
+    const [totalIssues,setTotalIssues]=useState([]);
+    const [myTotalIssues,setMyTotalIssues]=useState([]);
+    const[completedIssues,setCompletedIssues]=useState([]);
+    const [myPendingIssues,setPendingIssues]=useState([]);
+
+
+    
+   const createContract = () => {    //creating contract
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const Contract = new ethers.Contract(contractAddress,abi,signer);
+    return Contract;
+  };
+
+    async function getAllIssues()
+    {
+        try {
+            if (window.ethereum) {
+              const contract = createContract();
+              const AllIssues = await contract.getOpenIssues();
+              console.log(AllIssues);
+              setTotalIssues(AllIssues);
+            } 
+            else 
+            {
+              console.log("Metamask Not Found");
+            }
+          } 
+          catch (err) 
+          {
+            console.log(err);
+          }
+    }
+
+    useEffect(()=>{
+        if(window.ethereum)
+        {
+
+            getAllIssues();
+            // getMyIssues();
+            // getDoneIssues();
+            // getPendingIssues();
+
+        }
+    },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
 
     function handleAllIssues(){
         setAllIssues(true);
@@ -91,11 +141,13 @@ function Home(){
             {allIssues && 
             // map over data\
             <>
-            <AllCard/>
-            <AllCard/>
-            <AllCard/>
-            <AllCard/>
-            </>}
+                {totalIssues.map((issue)=>{
+                    return(
+                        <AllCard issue={issue}/>
+                    )
+                })}
+            </>
+            }
 
             {myIssues && 
             <MyCard/>}
