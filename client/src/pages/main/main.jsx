@@ -1,13 +1,11 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
+import React from "react";
+import Navbar from './navbar'
 import Userguide from '../../components/userguide';
 import About from '../../components/aboutus';
 import { ethers } from "ethers";
 import { contractAddress, abi } from "../../utils/constants";
 
-import Navbar from "./navbar";
-
-const Main = ({setIsConnected}) => {
-  
+function Main({setIsConnected}){
 
   async function createContract(){
     if (typeof window.ethereum != "undefined") {
@@ -28,28 +26,20 @@ const Main = ({setIsConnected}) => {
       return alert("please install metamask!!");
     }
   }
-
-
-
-
-
-  async function handleClick() {
-    try {
-      const res = await window.ethereum.request({ method: "eth_requestAccounts" });
-      console.log("Connected");
-      console.log(res);
-      if (res) {
-        setIsConnected(true);
-      }
-    } catch (error) {
-      console.error("Error connecting wallet:", error);
+  async function handleClick(){
+    if (typeof window.ethereum != "undefined") {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      console.log("connected");
+      setIsConnected(true);
+    } else {
+      console.log("please install metamask");
     }
   }
 
   return (
     <>
     <Navbar/>
-    <div className="flex flex-row items-center justify-center md:justify-evenly h-auto md:min-h-screen my-5 md:my-0 px-5 md:px-10 bg-zinc-900">
+    <div className="flex flex-col md:flex-row items-center justify-center md:justify-evenly h-auto md:min-h-screen my-5 md:my-0 px-5 md:px-10 bg-zinc-900">
       <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
        <span className="text-white text-6xl font-bold mb-5 md:mb-8">Githereum</span>
         <span className="text-white text-3xl md:text-4xl font-bold mb-5 md:mb-8">
@@ -65,9 +55,8 @@ const Main = ({setIsConnected}) => {
         {/* <Lottie options={defaultOptions} height={400} width={400} /> */}
         {/* image */}
       </div>
-      {/* <Userguide/> */}
-      {/* <About/> */}
-      
+      {/* <Userguide/>
+      <About/> */}
     </div>
     </>
   );

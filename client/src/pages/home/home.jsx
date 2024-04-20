@@ -31,7 +31,7 @@ function Home(){
 
     const [totalIssues,setTotalIssues]=useState([]);
     const [myTotalIssues,setMyTotalIssues]=useState([]);
-    const[completedIssues,setCompletedIssues]=useState([]);
+    const [completedIssues,setCompletedIssues]=useState([]);
     const [myPendingIssues,setPendingIssues]=useState([]);
 
 
@@ -43,6 +43,17 @@ function Home(){
     return Contract;
   };
 
+    async function getAccountAddress(){
+        try {
+            if(!window.ethereum) return alert("please install metamask!");
+            const accounts = await window.ethereum.request({ method: "eth_requestAccounts"});
+            if(accounts.length)
+            return accounts[0];
+            else console.log("an error occured");
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async function getAllIssues()
     {
         try {
@@ -63,20 +74,76 @@ function Home(){
           }
     }
 
-    useEffect(()=>{
-        if(window.ethereum)
-        {
-
-            getAllIssues();
-            // getMyIssues();
-            // getDoneIssues();
-            // getPendingIssues();
-
+    async function getDoneIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const DoneIssues = await contract.getClosedIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(DoneIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
         }
-    },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function getPendingIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const openIssues = await contract.getOpenIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(openIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    async function getMyIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const myIssues = await contract.getMyIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(myIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    // useEffect(()=>{
+    //     if(window.ethereum)
+    //     {
+
+    //         getAllIssues();
+    //         // getMyIssues();
+    //         getDoneIssues();
+    //         // getPendingIssues();
+
+    //     }
+    // },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
 
     function handleAllIssues(){
         setAllIssues(true);
+        getAllIssues();
         setMyIssues(false);
         setDoneIssues(false);
         setPending(false);
@@ -85,6 +152,7 @@ function Home(){
 
     function handleMyIssues(){
         setMyIssues(true);
+        getMyIssues();
         setAllIssues(false);
         setDoneIssues(false);
         setPending(false);
@@ -93,6 +161,7 @@ function Home(){
 
     function handleDoneIssues(){
         setDoneIssues(true);
+        getDoneIssues();
         setAllIssues(false);
         setMyIssues(false);
         setPending(false);
@@ -101,6 +170,7 @@ function Home(){
 
     function handlePending(){
         setPending(true);
+        getPendingIssues();
         setAllIssues(false);
         setMyIssues(false);
         setDoneIssues(false);
@@ -120,11 +190,11 @@ function Home(){
         <div className="flex flex-col items-center w-full min-h-screen bg-zinc-900">
 
             {/* navbar */}
-            <div className="w-full text-gray-500 top-0 mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <a  href='/' className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <div className="w-full text-gray-500 top-0 mx-auto flex flex-wrap p-5 flex-col md:flex-row justify-between items-center">
+                <a  href='/' className="flex title-font font-medium items-center text-gray-900 ml-6 mb-4 md:mb-0">
                     <span className="ml-3 text-xl text-white">Githereum</span>
                 </a>
-                <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-lg justify-center">
+                <nav className="flex flex-wrap items-center text-lg justify-center ml-12">
                     <div 
                     onClick={handleAllIssues}
                     className={`mr-5 hover:text-gray-30 ${allIssues?'text-gray-100':''}`}>All Issues</div>
@@ -141,18 +211,21 @@ function Home(){
                     onClick={handleCreate}
                     className={`mr-5 hover:text-gray-30 ${create?'text-gray-100':''}`}>Create Issue</div>
                 </nav>
-                <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+                <div className="flex gap-x-5">
+                <button className="bg-gray-100 border-0 py-1 px-3 focus:outline-none rounded">
                 address
                 </button>
-                <ThemeSwitch checked={darkMode} onChange={toggleDarkMode}/>
+                <ThemeSwitch  checked={darkMode} onChange={toggleDarkMode}/>
+                </div>
+                
             </div>  
 
             <div className="flex flex-wrap w-full px-16 py-16 gap-16">
-
             {allIssues && 
-            // map over data\
-            <>
-                {totalIssues.map((issue)=>{
+            <>  
+            {(totalIssues.length === 0)
+            ? <div className="w-full mt-16 text-center text-4xl text-slate-300">No Issues Have Been Posted Yet :/</div>
+            : totalIssues.map((issue)=>{
                     return(
                         <AllCard issue={issue}/>
                     )
@@ -160,19 +233,42 @@ function Home(){
             </>
             }
 
-            {myIssues && 
-            <MyCard/>}
+            {myIssues &&
+            <>
+            {myTotalIssues.length === 0
+            ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have Not Posted Any Issue :/</div>
+            : myTotalIssues.map((issue)=>{
+                return(
+                    <MyCard/>
+                )})}
+            </>
+            }
 
             {doneIssues &&
-            <DoneCard/>}
+            <>
+            {completedIssues.length === 0
+            ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have Not Solved Any Issue</div>
+            : completedIssues.map((issue)=>{
+                return(
+                    <DoneCard/>
+                )})}
+            </>
+            }
 
             {pending &&
-            <PendingCard/>}
-
-            {create && 
-            <Create/>}
-
+            <>
+            {myPendingIssues.length === 0
+            ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have No Pending Issue!</div>
+            : myPendingIssues.map((issue)=>{
+                return(
+                    <PendingCard/>
+                )})}
+            </>
+            }
             </div>
+            {create && <Create/>}
+
+            
         </div>
     );
 }

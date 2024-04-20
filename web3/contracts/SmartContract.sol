@@ -4,6 +4,10 @@ pragma solidity ^0.8.0;
 contract SmartContract {
     uint256 public count;
 
+    constructor(){
+        count=0;
+    }
+
     struct issues{
         uint id;
         string repoUrl;
@@ -31,7 +35,7 @@ contract SmartContract {
     }
 
     function allIssues() public view returns(issues[] memory){
-        issues[] memory allissues;
+        issues[] memory allissues = new issues[](count);
         uint k=0;
         for(uint i=0;i<count;i++)
         {
@@ -55,7 +59,7 @@ contract SmartContract {
 
     
     function getOpenIssues() public view returns(issues[] memory){
-        issues[] memory openIssues;
+        issues[] memory openIssues=new issues[](count);
         uint k=0;
         for(uint i=0;i<count;i++)
         {
@@ -73,22 +77,22 @@ contract SmartContract {
     }
     function myIssues() public view returns (issues[] memory)
     {
-        issues[] memory myIssues;
+        issues[] memory myIssue=new issues[](count);
         uint k=0;
         for(uint i=0;i<count;i++)
         {
             issues memory issue=map[i];
             if(msg.sender==issue.ownerAddress)
             {
-                myIssues[k]=issue;
+                myIssue[k]=issue;
             }
         }
-        return myIssues;
+        return myIssue;
     }
 
     function getClosedIssues() public view returns(issues[]memory)
     {
-        issues[] memory myCompletedIssues;
+        issues[] memory myCompletedIssues=new issues[](count);
         uint k=0;
         for(uint i=0;i<count;i++)
         {
