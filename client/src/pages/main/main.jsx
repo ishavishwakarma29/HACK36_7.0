@@ -1,8 +1,8 @@
 import React from "react";
-import Userguide from './userguide';
-import About from './aboutus';
+import Userguide from '../../components/userguide';
+import About from '../../components/aboutus';
 import { ethers } from "ethers";
-import { contractAddress, abi } from "../utils/constants";
+import { contractAddress, abi } from "../../utils/constants";
 
 function Main(){
   async function createContract(){

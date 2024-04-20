@@ -1,6 +1,5 @@
-import Navbar from './components/navbar';
-import Main from './components/main.jsx'
-import Nav2 from './components/nav2.jsx'
+import Navbar from './pages/main/navbar.jsx';
+import Main from './pages/main/main.jsx'
 import Home from './pages/home/home.jsx'
 import './App.css';
 

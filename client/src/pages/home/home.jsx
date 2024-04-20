@@ -7,9 +7,19 @@ import Create from "../../components/createissue";
 import { contractAddress,abi } from "../../utils/constants";
 import { FaMapSigns } from "react-icons/fa";
 import { ethers } from "ethers";
+import ThemeSwitch from '../../theme/theme'
+import useDarkMode from "../../hooks/darkmode";
 
 
 function Home(){
+
+    const [colorTheme, setTheme] = useDarkMode();
+    const [darkMode, setDarkMode] = useState(colorTheme === 'light' ? true : false);
+
+    const toggleDarkMode = checked => {
+        setTheme(colorTheme);
+        setDarkMode(checked);
+    };
 
     const[allIssues, setAllIssues]=useState(true);
     const[myIssues, setMyIssues]=useState(false);
@@ -134,6 +144,7 @@ function Home(){
                 <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
                 address
                 </button>
+                <ThemeSwitch checked={darkMode} onChange={toggleDarkMode}/>
             </div>  
 
             <div className="flex flex-wrap w-full px-16 py-16 gap-16">

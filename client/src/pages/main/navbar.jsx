@@ -1,12 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import { FaGithubAlt } from "react-icons/fa";
 import { AiFillPlayCircle } from "react-icons/ai";
 import './nav.css'
-import { createContract, getIssueCount } from "../utils/contractFunctions";
-import { contractAddress, abi } from "../utils/constants";
+import { createContract, getIssueCount } from "../../utils/contractFunctions";
+import { contractAddress, abi } from "../../utils/constants";
 import {ethers} from "ethers";
+import ThemeSwitch from '../../theme/theme'
+import useDarkMode from "../../hooks/darkmode";
 
 function Navbar(){
+    const [colorTheme, setTheme] = useDarkMode();
+    const [darkMode, setDarkMode] = useState(colorTheme === 'light' ? true : false);
+
+    const toggleDarkMode = checked => {
+        setTheme(colorTheme);
+        setDarkMode(checked);
+    };
+
     async function createContract(){
       if (typeof window.ethereum != "undefined") {
         try {
@@ -57,7 +67,7 @@ function Navbar(){
                     {/* <AiFillPlayCircle className="text-white mr-2" /> */}
                     <p className="text-white text-base font-semibold">Connect Wallet</p>
                 </button>
-                <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer">dark mode</button>
+                <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"><ThemeSwitch checked={darkMode}/></button>
             </div>
         </div>
     );
