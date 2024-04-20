@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import Userguide from '../../components/userguide';
 import About from '../../components/aboutus';
 import { ethers } from "ethers";
 import { contractAddress, abi } from "../../utils/constants";
 
-function Main(){
+import Navbar from "./navbar";
+
+const Main = ({setIsConnected}) => {
+  
+
   async function createContract(){
     if (typeof window.ethereum != "undefined") {
       try {
@@ -13,24 +17,39 @@ function Main(){
         const contract = new ethers.Contract(contractAddress, abi, signer);
         await contract.deployed();
         console.log(`Deployed contract at ${contract.address}`);
+        
         return contract;
-      } catch (error) {
+      }
+      catch (error) 
+      {
         return error;
       }
     } else {
       return alert("please install metamask!!");
     }
   }
-  async function handleClick(){
-    if (typeof window.ethereum != "undefined") {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      console.log("connected");
-    } else {
-      console.log("please install metamask");
+
+
+
+
+
+  async function handleClick() {
+    try {
+      const res = await window.ethereum.request({ method: "eth_requestAccounts" });
+      console.log("Connected");
+      console.log(res);
+      if (res) {
+        setIsConnected(true);
+      }
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
     }
   }
+
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center md:justify-evenly h-auto md:min-h-screen my-5 md:my-0 px-5 md:px-10 bg-zinc-900">
+    <>
+    <Navbar/>
+    <div className="flex flex-row items-center justify-center md:justify-evenly h-auto md:min-h-screen my-5 md:my-0 px-5 md:px-10 bg-zinc-900">
       <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
        <span className="text-white text-6xl font-bold mb-5 md:mb-8">Githereum</span>
         <span className="text-white text-3xl md:text-4xl font-bold mb-5 md:mb-8">
@@ -42,13 +61,15 @@ function Main(){
         </button>
 
       </div>
-      <div className="md:w-1/2 bg-slate-500">
+      <div className="w-1/2 h-10 bg-slate-500">
         {/* <Lottie options={defaultOptions} height={400} width={400} /> */}
         {/* image */}
       </div>
-      <Userguide/>
-      <About/>
+      {/* <Userguide/> */}
+      {/* <About/> */}
+      
     </div>
+    </>
   );
 };
 

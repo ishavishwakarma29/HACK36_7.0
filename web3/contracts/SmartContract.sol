@@ -42,10 +42,10 @@ contract SmartContract {
         return allissues;
     } 
 
-    function  addIssue(uint _id,string memory _repoUrl,string memory _desc, string memory _title,bool _completed,uint256 _ethAmount,address _userAddress)public {
+    function  addIssue(string memory _repoUrl,string memory _desc, string memory _title,bool _completed,uint256 _ethAmount)public {
         issues memory issue=map[count];
+        issue.id=count;
         count+=1;
-        issue.id=_id;
         issue.repoUrl=_repoUrl;
         issue.desc=_desc;
         issue.title=_title;
