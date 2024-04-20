@@ -8,7 +8,7 @@ function App() {
     <div className="flex flex-col items-center bg-zinc-900 gap-y-6">
         <Navbar/>
         <Main/>
-        {/* <Home/> */}
+        <Home/>
     </div>
   );
 }

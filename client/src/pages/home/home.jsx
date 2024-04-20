@@ -63,17 +63,34 @@ function Home(){
           }
     }
 
-    useEffect(()=>{
-        if(window.ethereum)
-        {
-
-            getAllIssues();
-            // getMyIssues();
-            // getDoneIssues();
-            // getPendingIssues();
-
+    async function getDoneIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const DoneIssues = await contract.getClosedIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(DoneIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
         }
-    },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
+        catch (err) {
+            console.log(err);
+        }
+    }
+    // useEffect(()=>{
+    //     if(window.ethereum)
+    //     {
+
+    //         getAllIssues();
+    //         // getMyIssues();
+    //         getDoneIssues();
+    //         // getPendingIssues();
+
+    //     }
+    // },[totalIssues,myTotalIssues,completedIssues,myPendingIssues]);
 
     function handleAllIssues(){
         setAllIssues(true);
@@ -126,13 +143,13 @@ function Home(){
                 </a>
                 <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-lg justify-center">
                     <div 
-                    onClick={handleAllIssues}
+                    onClick={getAllIssues}
                     className={`mr-5 hover:text-gray-30 ${allIssues?'text-gray-100':''}`}>All Issues</div>
                     <div 
                     onClick={handleMyIssues}
                     className={`mr-5 hover:text-gray-30 ${myIssues?'text-gray-100':''}`}>My Issues</div>
                     <div 
-                    onClick={handleDoneIssues}
+                    onClick={getDoneIssues}
                     className={`mr-5 hover:text-gray-30 ${doneIssues?'text-gray-100':''}`}>Completed Issues</div>
                     <div 
                     onClick={handlePending}
