@@ -43,6 +43,17 @@ function Home(){
     return Contract;
   };
 
+    async function getAccountAddress(){
+        try {
+            if(!window.ethereum) return alert("please install metamask!");
+            const accounts = await window.ethereum.request({ method: "eth_requestAccounts"});
+            if(accounts.length)
+            return accounts[0];
+            else console.log("an error occured");
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async function getAllIssues()
     {
         try {
@@ -80,6 +91,44 @@ function Home(){
             console.log(err);
         }
     }
+
+    async function getPendingIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const openIssues = await contract.getOpenIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(openIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    async function getMyIssues(){
+        try {
+            if (window.ethereum) {
+                const contract = createContract();
+                const myIssues = await contract.getMyIssues();
+                // console.log(AllIssues);
+                // setTotalIssues(AllIssues);
+                console.log(myIssues);
+            }
+            else {
+                console.log("Metamask Not Found");
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
     // useEffect(()=>{
     //     if(window.ethereum)
     //     {
@@ -146,13 +195,13 @@ function Home(){
                     onClick={getAllIssues}
                     className={`mr-5 hover:text-gray-30 ${allIssues?'text-gray-100':''}`}>All Issues</div>
                     <div 
-                    onClick={handleMyIssues}
+                    onClick={getMyIssues}
                     className={`mr-5 hover:text-gray-30 ${myIssues?'text-gray-100':''}`}>My Issues</div>
                     <div 
                     onClick={getDoneIssues}
                     className={`mr-5 hover:text-gray-30 ${doneIssues?'text-gray-100':''}`}>Completed Issues</div>
                     <div 
-                    onClick={handlePending}
+                    onClick={getPendingIssues}
                     className={`mr-5 hover:text-gray-30 ${pending?'text-gray-100':''}`}>Pending Issues</div>
                     <div 
                     onClick={handleCreate}
