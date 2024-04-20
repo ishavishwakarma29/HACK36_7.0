@@ -59,14 +59,6 @@ function Navbar(){
 
                 {/* before connect */}
                 <div className="flex flex-row justify-center items-center mx-5 my-2 p-3">User Guide</div>
-                <button
-                    onClick={handleClick}
-                    type="button"
-                    className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"
-                >
-                    {/* <AiFillPlayCircle className="text-white mr-2" /> */}
-                    <p className="text-white text-base font-semibold">Connect Wallet</p>
-                </button>
                 <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"><ThemeSwitch checked={darkMode}/></button>
             </div>
         </div>
