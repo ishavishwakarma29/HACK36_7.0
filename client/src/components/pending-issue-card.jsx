@@ -56,7 +56,7 @@ function PendingCard({title,desc,link,ethAmount,ownername,recieverAddress,id}){
                 console.log("in pay func");
                 const contract=createContract();
                 // const txRes=await contract.
-                const txRes=await contract.withdrawMoney(recieverAddress,ethAmount,id);
+                const txRes = await contract.withdrawMoney(recieverAddress, ethAmount.toString(),id);
                 console.log(txRes);
                 if(txRes)
                 {

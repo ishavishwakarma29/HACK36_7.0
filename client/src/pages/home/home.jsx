@@ -63,14 +63,6 @@ function Home(){
             if (window.ethereum) {
               const contract = createContract();
               const AllIssues = await contract.getOpenIssues();
-              console.log(AllIssues[1][1]);
-               console.log(AllIssues[1][2]);
-                console.log(AllIssues[1][3]);
-                console.log(AllIssues[1][4]);
-                console.log(AllIssues[1][5]);
-                console.log(AllIssues[1][6]);
-                console.log(AllIssues[1][7]);
-                console.log(AllIssues[1][8]);
               setTotalIssues(AllIssues);
             } 
             else 
