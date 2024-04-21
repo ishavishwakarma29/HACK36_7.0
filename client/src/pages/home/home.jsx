@@ -263,7 +263,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have No Pending Issue!</div>
             : myPendingIssues.map((issue)=>{
                 return(
-                    <PendingCard title={issue[3]} desc={issue[2]} link={issue[1]} id={JSON.parse(issue[0])} ethAmount={JSON.parse(issue[6])}/>
+                    <PendingCard title={issue[3]} desc={issue[2]} link={issue[1]} id={JSON.parse(issue[0])} ethAmount={JSON.parse(issue[6])} ownername={issue[4]} recieverAddress={userAddress}/>
                 )})}
             </>
             }

@@ -94,7 +94,12 @@ contract SmartContract {
                 k++;
             }
         }
-        return myIssue;
+        issues[] memory res=new issues[](k);
+        for(uint i=0;i<k;i++)
+        {
+            res[i]=myIssue[i];
+        }
+        return res;
     }
 
     function getClosedIssues() public view returns(issues[]memory)
@@ -138,12 +143,55 @@ contract SmartContract {
                 }
             }
         }
-        return issue;
-    }
-
-    function claim()external payable{
-
+        issues[]memory res=new issues[](k);
+        for(uint i=0;i<k;i++)
+        {
+            res[i]=issue[i];
+        }
+        return res;
     }
     
+    event Transfer(address from, address receiver, uint256 amount);
+    function withdrawMoney(address payable receiver, uint256 ethAmount,uint _id) public {
+        issues storage issue=map[_id];
+        require(issue.completed==false,"Issue is already completed");
+        // Ensure the contract has enough balance to transfer
+        require(address(this).balance >= ethAmount, "Insufficient contract balance");
+        // Transfer funds to the receiver
+        (bool success, ) = receiver.call{value: ethAmount}("");
+        require(success, "Transfer failed");
+        issue.completed=true;
+    }
+    
+    function completeIssue(uint _id)public
+    {
+        issues storage issue=map[_id];
+        issue.completed=true;
+        issue.trying=true;
+        issue.solverAddress=msg.sender;
+    }
+    function getMySolvedIssues() public view returns(issues[]memory)
+    {
+        issues[]memory  issue= new issues[](count);
+        uint k=0;
+        for(uint i=0;i<count;i++)
+        {
+            issues memory temp=map[i];
+            if(temp.completed==true)
+            {
+                if(temp.solverAddress==msg.sender)
+                {
+                    issue[k]=temp;
+                    k++;
+                }
+            }
+        }
+        issues[] memory res=new issues[](k);
+        for(uint i=0;i<k;i++)
+        {
+            res[i]=issue[i];
+        }
+        return res;
+    }
 
 }
