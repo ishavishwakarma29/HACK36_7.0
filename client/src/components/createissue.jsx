@@ -78,9 +78,9 @@ function Create(){
         <input 
         className="w-4/5 max-h-24 rounded-lg focus:outline-none cursor-auto bg-zinc-500 text-white font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2"
         type="number"
-        placeholder="ETH-Amount"
+        placeholder="Enter amount in wei"
         onChange={(e) => setEthAmount(e.target.value)}></input>
-        <button onClick={handleSubmit}>Submit Issue</button>
+            <button onClick={handleSubmit} className="w-4/5 rounded-lg focus:outline-none cursor-auto bg-white text-black font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2">Submit Issue</button>
     </div>)
 }
 export default Create;

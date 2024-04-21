@@ -20,7 +20,7 @@ function AllCard({title,desc,ethAmount,link,id}){
 
     
     function handleClick(){
-        window.location.replace(link,);
+        window.location.open(link);
     }
     async function handleClickBtn(){
         if(window.ethereum)

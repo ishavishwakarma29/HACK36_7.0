@@ -63,7 +63,14 @@ function Home(){
             if (window.ethereum) {
               const contract = createContract();
               const AllIssues = await contract.getOpenIssues();
-              console.log(AllIssues);
+              console.log(AllIssues[1][1]);
+               console.log(AllIssues[1][2]);
+                console.log(AllIssues[1][3]);
+                console.log(AllIssues[1][4]);
+                console.log(AllIssues[1][5]);
+                console.log(AllIssues[1][6]);
+                console.log(AllIssues[1][7]);
+                console.log(AllIssues[1][8]);
               setTotalIssues(AllIssues);
             } 
             else 
@@ -83,7 +90,7 @@ function Home(){
                 const contract = createContract();
                 const DoneIssues = await contract.getClosedIssues();
                 // console.log(AllIssues);
-                // setTotalIssues(AllIssues);
+                setCompletedIssues(DoneIssues);
                 console.log(DoneIssues);
             }
             else {
@@ -120,7 +127,7 @@ function Home(){
                 const contract = createContract();
                 const myIssues = await contract.myIssues();
                 // console.log(AllIssues);
-                // setTotalIssues(AllIssues);
+                setMyTotalIssues(myIssues);
                 console.log(myIssues);
             }
             else {
@@ -137,8 +144,8 @@ function Home(){
         {
             getAccountAddress();
             getAllIssues();
-            // getMyIssues();
-            // getDoneIssues();
+            getMyIssues();
+            getDoneIssues();
             getPendingIssues();
 
         }
@@ -229,7 +236,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">No Issues Have Been Posted Yet :/</div>
             : totalIssues.map((issue)=>{
                     return(
-                        <AllCard title={issue[3]} desc={issue[2]} link={issue[1]} id={JSON.parse(issue[0])} ethAmount={JSON.parse(issue[6])}/>
+                        <AllCard id={JSON.parse(issue[0])} username={issue[1]} title={issue[3]} desc={issue[2]} link={`https://github.com/${issue[1]}/pythonPractice`} ethAmount={JSON.parse(issue[6])} status={issue[5]}/>
                     )
                 })}
             </>
@@ -241,7 +248,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have Not Posted Any Issue :/</div>
             : myTotalIssues.map((issue)=>{
                 return(
-                    <MyCard/>
+                    <MyCard id={JSON.parse(issue[0])} username={issue[1]} title={issue[3]} desc={issue[2]} link={`https://github.com/${issue[1]}/pythonPractice`} ethAmount={JSON.parse(issue[6])} status={issue[5]} />
                 )})}
             </>
             }
@@ -252,7 +259,7 @@ function Home(){
             ? <div className="w-full mt-16 text-center text-4xl text-slate-300">You Have Not Solved Any Issue</div>
             : completedIssues.map((issue)=>{
                 return(
-                    <DoneCard/>
+                    <DoneCard id={JSON.parse(issue[0])} username={issue[1]} title={issue[3]} desc={issue[2]} link={`https://github.com/${issue[1]}/pythonPractice`} ethAmount={JSON.parse(issue[6])} status={issue[5]} />
                 )})}
             </>
             }

@@ -79,7 +79,11 @@ contract SmartContract {
                 k++;
             }
         }
-        return openIssues;
+        issues[] memory res=new issues[](k);
+        for (uint i = 0; i < k; i++) {
+            res[i]=openIssues[i];
+        }
+        return res;
     }
     function myIssues() public view returns (issues[] memory)
     {
@@ -94,9 +98,8 @@ contract SmartContract {
                 k++;
             }
         }
-        issues[] memory res=new issues[](k);
-        for(uint i=0;i<k;i++)
-        {
+       issues[] memory res=new issues[](k);
+        for (uint i = 0; i < k; i++) {
             res[i]=myIssue[i];
         }
         return res;
@@ -118,7 +121,11 @@ contract SmartContract {
                 }
             }
         }
-        return myCompletedIssues;
+        issues[] memory res=new issues[](k);
+        for (uint i = 0; i < k; i++) {
+            res[i]=myCompletedIssues[i];
+        }
+        return res;
     }
 
     function requestIssue(uint256 _id, string memory _username) public {
@@ -143,9 +150,8 @@ contract SmartContract {
                 }
             }
         }
-        issues[]memory res=new issues[](k);
-        for(uint i=0;i<k;i++)
-        {
+        issues[] memory res=new issues[](k);
+        for (uint i = 0; i < k; i++) {
             res[i]=issue[i];
         }
         return res;
@@ -187,11 +193,9 @@ contract SmartContract {
             }
         }
         issues[] memory res=new issues[](k);
-        for(uint i=0;i<k;i++)
-        {
+        for (uint i = 0; i < k; i++) {
             res[i]=issue[i];
         }
         return res;
     }
-
 }
