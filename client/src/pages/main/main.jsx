@@ -4,6 +4,8 @@ import Userguide from '../../components/userguide';
 import About from '../../components/aboutus';
 import { ethers } from "ethers";
 import { contractAddress, abi } from "../../utils/constants";
+// import file from "../../utils/images"; 
+import file from "../../utils/images/file.png" 
 
 function Main({setIsConnected}){
 
@@ -51,10 +53,7 @@ function Main({setIsConnected}){
         </button>
 
       </div>
-      <div className="w-1/2 h-10 bg-slate-500">
-        {/* <Lottie options={defaultOptions} height={400} width={400} /> */}
-        {/* image */}
-      </div>
+        <img src={file}/>
       {/* <Userguide/>
       <About/> */}
     </div>

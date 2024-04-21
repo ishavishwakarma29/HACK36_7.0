@@ -58,8 +58,6 @@ function Navbar(){
                 </div> */}
 
                 {/* before connect */}
-                <div className="flex flex-row justify-center items-center mx-5 my-2 p-3">User Guide</div>
-                <button className="flex flex-row justify-center items-center mx-5 my-2 p-3 rounded-md cursor-pointer"><ThemeSwitch checked={darkMode}/></button>
             </div>
         </div>
     );

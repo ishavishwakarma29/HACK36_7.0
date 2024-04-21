@@ -68,12 +68,12 @@ function Create(){
         <input 
         className="w-4/5 rounded-lg focus:outline-none cursor-auto bg-zinc-500 text-white font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2"
         type="text" 
-        placeholder="Repo Link"
+        placeholder="GitHub Reponame"
         onChange={(e) => setRepoLink(e.target.value)}></input>
         <input 
         className="w-4/5 max-h-24 rounded-lg focus:outline-none cursor-auto bg-zinc-500 text-white font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2"
         type="textarea"
-        placeholder="Description . . ."
+        placeholder="Description of your issue"
         onChange={(e) => setDesc(e.target.value)}></input>
         <input 
         className="w-4/5 max-h-24 rounded-lg focus:outline-none cursor-auto bg-zinc-500 text-white font-semibold placeholder:font-semibold placeholder:text-slate-200 px-3 py-2"
